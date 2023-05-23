@@ -198,7 +198,7 @@ def check_timestamp(tst, certificate=None, data=None, digest=None, hashname=None
 
 
 class RemoteTimestamper(object):
-    def __init__(self, url, certificate=None, capath=None, cafile=None, username=None, password=None, hashname=None, include_tsa_certificate=False, timeout=10, tsa_policy_id=None):
+    def __init__(self, url, certificate=None, capath=None, cafile=None, username=None, password=None, hashname=None, include_tsa_certificate=False, timeout=10, tsa_policy_id=None, cert_req=False):
         self.url = url
         self.certificate = certificate
         self.capath = capath
@@ -209,6 +209,7 @@ class RemoteTimestamper(object):
         self.include_tsa_certificate = include_tsa_certificate
         self.timeout = timeout
         self.tsa_policy_id = tsa_policy_id
+        self.cert_req = cert_req
 
     def check_response(self, response, digest, nonce=None):
         '''
@@ -285,7 +286,7 @@ def data_to_digest(data, hashname='sha1'):
     return hashobj.digest()
 
 
-def make_timestamp_request(data=None, digest=None, hashname='sha1', include_tsa_certificate=False, nonce=None, tsa_policy_id=None):
+def make_timestamp_request(data=None, digest=None, hashname='sha1', include_tsa_certificate=False, nonce=None, tsa_policy_id=None, cert_req=False):
     algorithm_identifier = rfc2459.AlgorithmIdentifier()
     algorithm_identifier.setComponentByPosition(0, get_hash_oid(hashname))
     message_imprint = rfc3161ng.MessageImprint()
@@ -306,6 +307,8 @@ def make_timestamp_request(data=None, digest=None, hashname='sha1', include_tsa_
     if nonce is not None:
         tsq.setComponentByPosition(3, int(nonce))
     tsq.setComponentByPosition(4, include_tsa_certificate)
+    if cert_req:
+        tsq.setComponentByPosition(5, cert_req)
     return tsq
 
 
