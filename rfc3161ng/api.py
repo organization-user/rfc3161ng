@@ -249,7 +249,8 @@ class RemoteTimestamper(object):
             hashname=self.hashname,
             include_tsa_certificate=include_tsa_certificate if include_tsa_certificate is not None else self.include_tsa_certificate,
             nonce=nonce,
-            tsa_policy_id=tsa_policy_id if tsa_policy_id is not None else self.tsa_policy_id
+            tsa_policy_id=tsa_policy_id if tsa_policy_id is not None else self.tsa_policy_id,
+            cert_req=self.cert_req
         )
         binary_request = encode_timestamp_request(request)
 
