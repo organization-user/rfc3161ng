@@ -309,7 +309,7 @@ def make_timestamp_request(data=None, digest=None, hashname='sha1', include_tsa_
         tsq.setComponentByPosition(3, int(nonce))
     tsq.setComponentByPosition(4, include_tsa_certificate)
     if cert_req:
-        tsq.setComponentByPosition(5, cert_req)
+        tsq.setComponentByName("certReq", univ.Boolean(True))
     return tsq
 
 
